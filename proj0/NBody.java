@@ -33,16 +33,38 @@ public class NBody{
 		String filename = args[2];
 		double radius = readRadius(filename);
 		Planet[] planets = readPlanets(filename);
-		String imageToDraw = "starfiled.jpg";
-		StdDraw.setScale(-100, 100);
-		StdDraw.clear();
-		StdDraw.picture(0, 75, imageToDraw);
-		StdDraw.picture(-75, -75, imageToDraw);
-		StdDraw.picture(75, -75, imageToDraw);
+		String imageToDraw = "images/starfield.jpg";
+		double time = 0;
+		while(time != T){
+            StdDraw.enableDoubleBuffering();
+            StdDraw.setScale(-radius,radius);
+            StdDraw.clear();
+            StdDraw.picture(0,0,imageToDraw);
+            double[] xForces = new double[planets.length];
+            double[] yForces = new double[planets.length];
+            /** need to calculate the netforce all once rather than immediately update one
+             * cause the x,y changes may change the later netforce calculation of other planets*/
+            for (int i = 0;i<planets.length;i++) {
+                Planet p = planets[i];
+                xForces[i] = p.calcNetForceExertedByX(planets);
+                yForces[i] = p.calcNetForceExertedByY(planets);
+            }
 
-		/* Shows the drawing to the screen, and waits 2000 milliseconds. */
-		StdDraw.show();
-		StdDraw.pause(2000);	
-
-
+            for (int i = 0;i<planets.length;i++) {
+                Planet p = planets[i];
+                p.update(dt,xForces[i],yForces[i]);
+                p.draw();
+            }
+            StdDraw.show();
+            StdDraw.pause(10);
+            time += dt;
+        }
+        StdOut.printf("%d\n", planets.length);
+        StdOut.printf("%.2e\n", radius);
+        for (int i = 0; i < planets.length; i++) {
+            StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n",
+                    planets[i].xxPos, planets[i].yyPos, planets[i].xxVel,
+                    planets[i].yyVel, planets[i].mass, planets[i].imgFileName);
+        }
+	}
 }

@@ -10,7 +10,7 @@
  */
 
 public class StdDrawDemo {
-	public static String imageToDraw = "advice.png";
+	public static String imageToDraw = "examples/advice.png";
 
 	/* Draws three copies of the image in a rectangular pattern. */
 	public static void drawThree() {
@@ -39,7 +39,7 @@ public class StdDrawDemo {
 		/* Stamp 100 additional pictures in random locations,
 		 * each one coming slightly faster than the one before. */
 		int count = 0;
-		while (count < 200) {
+		while (count < 50) {
 			/* picks random x and y between -90 and 90 */
 			double x = StdRandom.uniform(-90, 90);
 			double y = StdRandom.uniform(-90, 90);
@@ -95,9 +95,8 @@ public class StdDrawDemo {
 	}
 
 	public static void main(String[] args) {
-		
 		drawThree();
-		// drawRandom();
-		// drawZoom();
+		drawRandom();
+		drawZoom();
 	}
 } 
